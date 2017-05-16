@@ -28,7 +28,7 @@ app.get("/view", (req, response) =>{
 
 
 app.get("/api/:reservations?", (req, response) =>{
-	var res = req.params.characters;
+	var res = req.params.reservations;
 
 	if(res){
 		console.log(res);
@@ -40,7 +40,7 @@ app.get("/api/:reservations?", (req, response) =>{
 		}
 		return response.json(false);
 	}
-	return res.json(characters);
+	return response.json(reservations);
 });
 
 //keys: name phoneNumber uniqueID email
