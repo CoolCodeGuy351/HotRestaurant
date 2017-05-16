@@ -65,18 +65,17 @@
     // Question: What does this code do?
     $("#add-btn").on("click", function(event) {
       event.preventDefault();
-      var newCharacter = {
+      var newReservation = {
         name: $("#name").val().trim(),
-        role: $("#role").val().trim(),
-        age: $("#age").val().trim(),
-        forcePoints: $("#force-points").val().trim()
+        phoneNumber: $("#phoneNumber").val().trim(),
+        email: $("#email").val().trim(),
+        uniqueID: $("#uniqueID").val().trim()
       };
 
       // Question: What does this code do??
-      $.post("/api/new", newCharacter)
+      $.post("/api/new", newReservation)
       .done(function(data) {
         console.log(data);
-        alert("Adding character...");
       });
     });
   </script>

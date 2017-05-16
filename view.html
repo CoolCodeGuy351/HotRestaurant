@@ -1,81 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>view</title>
-  <!-- Latest compiled and minified CSS & JS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
+    <meta charset="UTF-8">
+    <title>view</title>
+    <!-- Latest compiled and minified CSS & JS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
+
 <body>
-
-  <div class="container">
-    <div class="jumbotron text-center">
-      <h1>Restaurant!</h1>
-      <h3>View the current reservations</h3>
-      <hr>
-      <a href="/add"><button type="button" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-plus"></span> Make a reservation!</button></a>
-    </div>
-    <div class="row">
-
-      <div class="col-lg-12">
-
-<!--         <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title"><strong>Character Search</strong></h3>
-          </div>
-          <div class="panel-body">
-            <input type="text" id="character-search" class="form-control">
-            <br>
-            <div class="text-right">
-              <button type="submit" class="btn btn-primary btn-md" id="search-btn"><span class="glyphicon glyphicon-search"></span> Search Your Feelings. You know it is true.</button>
-
-            </div>
-          </div>
-        </div> -->
-
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title"><strong>Current reservations:</strong></h3>
-          </div>
-          <div class="panel-body">
-<!--             <div class="well">
-              <h2 id="name">Yoda</h2>
-              <div id="stats">
-                <h3><strong>Role:</strong> <span id="role">Jedi Master</span></h3>
-                <h3><strong>Age:</strong> <span id="age">900</span></h3>
-                <h3><strong>Force Points:</strong> <span id="force-points">2000</span></h3>
-              </div>
-            </div> -->
-          </div>
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1>Restaurant!</h1>
+            <h3>View the current reservations</h3>
+            <hr>
+            <a href="/add">
+                <button type="button" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-plus"></span> Make a reservation!</button>
+            </a>
         </div>
-      </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Reservation ID Search</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <input type="text" id="searchedID" class="form-control">
+                        <br>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary btn-md" id="search-btn"><span class="glyphicon glyphicon-search"></span> Search For your Reservation using your ID.</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Current reservations:</strong></h3>
+                    </div>
+                    <div class="panel-body" id="currentReservations">
+                        <div class="well">
+                            <h2 id="name">  </h2>
+                            <div id="details">
+                                <h3><strong>Phone Number:</strong> <span id="phoneNumber"></span></h3>
+                                <h3><strong>Email:</strong> <span id="email"></span></h3>
+                                <h3><strong>Unique ID:</strong> <span id="uniqueID"></span></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Waitlist:</strong></h3>
+                    </div>
+                    <div class="panel-body" id="waitlistRes">
+                  </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+    <script type="text/javascript">
+    $.get("/api/", function(data) {
+                for (var i = 0; i < data.length; i++) {
+                  var newDiv = (`
+                        <div class="well">
+                          <h2 id="name"> ${data[i].name} </h2>
+                          <div id="details">
+                            <h3><strong>Phone Number:</strong> <span id="phoneNumber">${data[i].phoneNumber}</span></h3>
+                            <h3><strong>Email:</strong> <span id="email">${data[i].email}</span></h3>
+                            <h3><strong>Unique ID:</strong> <span id="uniqueID">${data[i].uniqueID}</span></h3>
+                          </div>
+                        </div>`)
 
-  <script type="text/javascript">
-    $("#search-btn").on("click", function() {
-      var searchedCharacter = $("#character-search").val().trim();
+                    if (i < 5) {
+                      $("#currentReservations").append(newDiv);
+                    } else {
+                      $("#waitlistRes").append(newDiv);
+                    }
+                }
+            });
 
-      searchedCharacter = searchedCharacter.replace(/\s+/g, "").toLowerCase();
 
-      $.get("/api/" + searchedCharacter, function(data) {
-        console.log(data);
-        if (data) {
-          $("#stats").show();
-          $("#name").text(data.name);
-          $("#role").text(data.role);
-          $("#age").text(data.age);
-          $("#force-points").text(data.forcePoints);
-        }
-        else {
-          $("#name").text("The force is not strong with this one. Your character was not found.");
-          $("#stats").hide();
-        }
-      });
-    });
-  </script>
+
+
+            //       $("#uniqueID").append(data.uniqueID);
+
+
+
+
+            // $("#search-btn").on("click", function() {
+            //   var searchedID = $("#searchedID").val().trim();
+
+            //   searchedID = searchedID.replace(/\s+/g, "").toLowerCase();
+
+            //   $.get("/api/" + searchedID, function(data) {
+            //     console.log(data);
+            //     if (data) {
+            //       $("#details").show();
+            //       $("#name").append(data.name);
+            //       $("#phoneNumber").append(data.phoneNumber);
+            //       $("#email").append(data.email);
+            //       $("#uniqueID").append(data.uniqueID);
+            //     }
+            //     else {
+            //       $("#name").text("No reservation under this ID.");
+            //       $("#details").hide();
+            //     }
+            //   });
+            // });
+    </script>
 </body>
+
 </html>
